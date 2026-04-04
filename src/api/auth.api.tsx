@@ -1,15 +1,8 @@
 
+import type { LoginFormData } from "../pages/LoginPage";
 import type {  } from "../pages/RegisterPage";
 import axiosInstance from "./axios";
-
-export interface RegisterData{
-    name: string
-    email: string
-    password: string
-}
-export interface RegisterReponse{
-    message: string
-}
+import type { RegisterData, RegisterReponse } from "./types";
 
 export const AuthApi = {
     register: async(formData: RegisterData): Promise<RegisterReponse>=>{
@@ -17,13 +10,18 @@ export const AuthApi = {
         return response.data
     },
 
-    verifyOtp: async(otp: string): Promise<RegisterReponse>=>{
-        const response = await axiosInstance.post('/api/auth/verify-otp', otp);
+    verifyOtp: async(email: string,otp: string): Promise<RegisterReponse>=>{
+        const response = await axiosInstance.post('/api/auth/verify-otp', {email,otp});
         return response.data
     },
 
-    resendOtp: async(): Promise<RegisterReponse>=>{
-        const response = await axiosInstance.post('/api/auth/resend-otp');
+    resendOtp: async(email: string): Promise<RegisterReponse>=>{
+        const response = await axiosInstance.post('/api/auth/resend-otp', {email});
+        return response.data
+    },
+
+    login: async(data:LoginFormData): Promise<RegisterReponse>=>{
+        const response = await axiosInstance.post('/api/auth/login', data);
         return response.data
     }
 }
