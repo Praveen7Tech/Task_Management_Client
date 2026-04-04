@@ -1,0 +1,38 @@
+import axios, { type InternalAxiosRequestConfig } from "axios";
+import { store } from "../app/store/store";
+import { logout } from "../app/slices/auth.slice";
+import toast from "react-hot-toast";
+
+const axiosInstance = axios.create({
+    baseURL: import.meta.env.VITE_API_URL,
+    headers:{
+        "Content-Type": "application/json"
+    },
+    withCredentials: true
+})
+
+axiosInstance.interceptors.request.use(
+    (config: InternalAxiosRequestConfig)=>{
+        return config
+    },
+    (error)=>{
+        return Promise.reject(error)
+    }
+)
+
+axiosInstance.interceptors.response.use(
+    (response)=> response,
+    (error)=>{
+        if(error.response.status === 401){
+            console.log("un autherisation")
+            store.dispatch(logout())
+            return Promise.reject(error)
+        }
+
+        const message = error.response.data.message || "Something went wrong"
+        toast.error(message)
+        return Promise.reject(error)
+    }
+)
+
+export default axiosInstance;
