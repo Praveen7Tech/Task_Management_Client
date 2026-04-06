@@ -22,15 +22,20 @@ const authSlice = createSlice({
     name: "auth",
     initialState,
     reducers:{
-        setCredentials: (state, action: PayloadAction<User>)=>{
-            state.user = action.payload;
-            state.isAuthenticated = true;
-            state.isLoading = false
+       setCredentials: (state, action: PayloadAction<User | null>) => {
+            if (action.payload) {
+                state.user = action.payload;
+                state.isAuthenticated = true;
+            } else {
+                state.user = null;
+                state.isAuthenticated = false;
+            }
+            state.isLoading = false;
         },
-        logout: (state)=>{
+        logout: (state) => {
             state.user = null;
             state.isAuthenticated = false;
-            state.isLoading = false
+            state.isLoading = false;
         }
     }
 })
