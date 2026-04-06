@@ -1,4 +1,5 @@
 
+import type { User } from "../app/slices/auth.slice";
 import type { LoginFormData } from "../pages/LoginPage";
 import type {  } from "../pages/RegisterPage";
 import axiosInstance from "./axios";
@@ -22,6 +23,16 @@ export const AuthApi = {
 
     login: async(data:LoginFormData): Promise<RegisterReponse>=>{
         const response = await axiosInstance.post('/api/auth/login', data);
+        return response.data
+    },
+
+    health: async():Promise<User>=>{
+        const response = await axiosInstance.get('/api/auth/health');
+        return response.data
+    },
+
+    logout: async(): Promise<{message: string}>=>{
+        const response = await axiosInstance.put('/api/auth/logout');
         return response.data
     }
 }
