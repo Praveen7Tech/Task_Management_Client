@@ -29,8 +29,7 @@ axiosInstance.interceptors.response.use(
 
             try {
                 await AuthApi.health();
-                // If successful, the backend sent a NEW accessToken cookie
-                //  retry the original request
+                // If successful, the backend sent a NEW accessToken cookie retry the original request
                 return axiosInstance(originalRequest);
             } catch (refreshError) {
                 // Refresh token also expired or invalid -> Force Logout
