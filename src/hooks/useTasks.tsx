@@ -21,7 +21,8 @@ export const useTaskActions = (page: number, limit: number) => {
       setTasks(res.task);
       setStats(res.status);
       setTotalPages(res.totalPages);
-    } catch (e) {
+    } catch (error) {
+      console.error(error)
       toast.error("Failed to fetch tasks");
     } finally {
       setLoading(false);

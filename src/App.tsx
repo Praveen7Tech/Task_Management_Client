@@ -30,6 +30,7 @@ function App() {
         dispatch(logout());
       }
     } catch (err) {
+      console.error(err)
       dispatch(logout());
     }
   };

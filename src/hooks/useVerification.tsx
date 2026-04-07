@@ -86,6 +86,7 @@ export const useVerification = (email: string) => {
 
       return true;
     } catch (err) {
+      console.error(err)
       return false;
     } finally {
       setVerifyLoading(false);
