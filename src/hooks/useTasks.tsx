@@ -2,6 +2,16 @@ import { useEffect, useState } from "react";
 import { UserApi } from "../api/user.api";
 import toast from "react-hot-toast";
 import type { Task } from "../components/custom/TaskDialog";
+import { socket } from "../config/socket.io";
+import { useSelector } from "react-redux";
+import type { RootState } from "../app/store/store";
+
+interface ActivityData{
+  senderId: string
+  type: string;
+  userName: string;
+  taskName: string
+}
 
 export const useTasks = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -10,7 +20,35 @@ export const useTasks = () => {
 
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1);
-  const LIMIT = 1
+  const LIMIT = 3
+  const user = useSelector((state: RootState)=> state.auth.user)
+
+  // SOCKET HANDLER
+  useEffect(()=>{
+
+    const handleActivity = (data:ActivityData)=>{
+      console.log("task update ", data)
+      const {type, userName, taskName, senderId} = data;
+
+      if(senderId === user?.id){
+         return;
+      }
+      const message = `${userName} ${type}ed a task : ${taskName}`
+      toast.success(message)
+
+      fetchTasks()
+    }
+
+    socket.on("task_activity", handleActivity)
+
+    return ()=>{
+      socket.off("task_activity", handleActivity)
+    }
+  },[])
+
+  useEffect(() => {
+    fetchTasks();
+  }, [page]);
 
   const fetchTasks = async () => {
     try {
@@ -57,10 +95,6 @@ export const useTasks = () => {
       toast.error("Delete failed");
     }
   };
-
-  useEffect(() => {
-    fetchTasks();
-  }, [page]);
 
   return {
     tasks,
