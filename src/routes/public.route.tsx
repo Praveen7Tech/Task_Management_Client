@@ -5,7 +5,6 @@ import { Navigate } from "react-router-dom";
 
 export const PublicRoute = ({children}:{ children : JSX.Element})=>{
     const isAuthenticated = useSelector((state: RootState)=> state.auth.isAuthenticated)
-    console.log("is auth public ", isAuthenticated)
 
     return !isAuthenticated ? children : <Navigate to='/dashboard' replace/>
 }

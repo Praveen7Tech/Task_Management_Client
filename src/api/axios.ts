@@ -1,7 +1,6 @@
 import axios, { type InternalAxiosRequestConfig } from "axios";
 import { store } from "../app/store/store";
 import { logout, } from "../app/slices/auth.slice";
-import toast from "react-hot-toast";
 import { AuthApi } from "./auth.api";
 
 const axiosInstance = axios.create({
@@ -30,8 +29,7 @@ axiosInstance.interceptors.response.use(
 
             try {
                 await AuthApi.health();
-                // If successful, the backend sent a NEW accessToken cookie
-                //  retry the original request
+                // If successful, the backend sent a NEW accessToken cookie retry the original request
                 return axiosInstance(originalRequest);
             } catch (refreshError) {
                 // Refresh token also expired or invalid -> Force Logout
