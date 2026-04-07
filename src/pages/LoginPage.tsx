@@ -65,12 +65,6 @@ const Login = () => {
           error={errors.password?.message}
         />
 
-        <div className="flex justify-end">
-          <Link to="#" className="text-xs text-accent hover:underline">
-            Forgot password?
-          </Link>
-        </div>
-
         <Button
           type="submit"
           disabled={isSubmitting}

@@ -38,6 +38,7 @@ export interface TaskStats {
     total: number;
     completed: number;
     pending: number;
+    overdue: number
 }
 
 export interface TaskDashboardData{

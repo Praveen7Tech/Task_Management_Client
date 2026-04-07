@@ -30,7 +30,6 @@ function App() {
         dispatch(logout());
       }
     } catch (err) {
-      // On any error (like 401), ensure the state is logged out
       dispatch(logout());
     }
   };
