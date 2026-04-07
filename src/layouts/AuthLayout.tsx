@@ -1,5 +1,6 @@
 import { CheckSquare } from "lucide-react";
 import { Link } from "react-router-dom";
+import { UseSocket } from "../hooks/useSocket";
 
 interface AuthLayoutProps {
   children: React.ReactNode;

@@ -38,6 +38,7 @@ const formatDate = (d: string) =>
 
 const Home = () => {
   const {tasks,stats,createTask,updateTask,deleteTask,page, setPage, totalPages}=useTasks();
+
   const user=useSelector((s:RootState)=>s.auth.user);
 
   const[dialogOpen,setDialogOpen]=useState(false);
