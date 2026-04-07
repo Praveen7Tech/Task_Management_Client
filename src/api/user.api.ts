@@ -4,8 +4,8 @@ import type { AddTaskData, createTaskResponse, TaskDashboardData } from "./types
 
 export const UserApi = {
 
-    getTasks: async(): Promise<TaskDashboardData>=>{
-        const response = await axiosInstance.get('/api/user/tasks')
+    getTasks: async(page: number, limit: number): Promise<TaskDashboardData>=>{
+        const response = await axiosInstance.get(`/api/user/tasks?page=${page}&limit=${limit}`)
         return response.data
     },
 

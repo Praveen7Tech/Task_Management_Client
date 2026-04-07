@@ -44,5 +44,8 @@ export interface TaskStats {
 export interface TaskDashboardData{
     task: Task[]
     status: TaskStats
+    page: number
+    total: number
+    totalPages: number
 }
 

@@ -37,19 +37,22 @@ const formatDate = (d: string) =>
   });
 
 const Home = () => {
-  const {tasks,stats,createTask,updateTask,deleteTask}=useTasks();
+  const {tasks,stats,createTask,updateTask,deleteTask,page, setPage, totalPages}=useTasks();
   const user=useSelector((s:RootState)=>s.auth.user);
 
   const[dialogOpen,setDialogOpen]=useState(false);
   const[editingTask,setEditingTask]=useState<Task|null>(null);
   const[deleteTarget,setDeleteTarget]=useState<Task|null>(null);
 
-  const handleSave=async(data:Omit<Task,"id">)=>{
-  if (editingTask) {
-    await updateTask({ ...editingTask, ...data });
+  const handleSave = async (data: Omit<Task, "id">) => {
+    if (editingTask) {
+      await updateTask({ ...editingTask, ...data });
+    } else {
+      await createTask(data);
+    }
+
     setEditingTask(null);
-  } else await createTask(data);
-  setDialogOpen(false);
+    setDialogOpen(false);
   };
 
   const handleDelete = async () => {
@@ -125,10 +128,9 @@ const Home = () => {
         </div>
 
         <div className="flex justify-between items-center">
-          <h1 className="text-xl font-bold">My Tasks</h1>
-          <Button size="sm" onClick={() => setDialogOpen(true)}>
-            <Plus className="w-4 h-4 mr-1.5" />
-            Add Task
+           <h1 className="text-xl font-heading font-bold text-foreground">My Tasks</h1>
+          <Button size="lg" onClick={()=> setDialogOpen(true)} className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
+            <Plus className="w-4 h-4 mr-1.5" /> Add Task
           </Button>
         </div>
 
@@ -185,7 +187,7 @@ const Home = () => {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={() => setEditingTask(task)}>
+                  <DropdownMenuItem onClick={() =>{ setEditingTask(task); setDialogOpen(true)}}>
                     {" "}
                     <Pencil className="w-4 h-4 mr-2" />
                     Edit{" "}
@@ -202,6 +204,27 @@ const Home = () => {
               </DropdownMenu>
             </div>
           ))}
+        </div>
+        <div className="flex justify-center items-center gap-2 mt-6">
+          <Button
+            size="sm"
+            disabled={page === 1}
+            onClick={() => setPage(page - 1)}
+          >
+            Prev
+          </Button>
+
+          <span className="text-sm">
+            Page {page} of {totalPages}
+          </span>
+
+          <Button
+            size="sm"
+            disabled={page === totalPages}
+            onClick={() => setPage(page + 1)}
+          >
+            Next
+          </Button>
         </div>
       </main>
 
