@@ -2,6 +2,7 @@ import axios, { type InternalAxiosRequestConfig } from "axios";
 import { store } from "../app/store/store";
 import { logout, } from "../app/slices/auth.slice";
 import { AuthApi } from "./auth.api";
+import toast from "react-hot-toast";
 
 const axiosInstance = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
@@ -37,6 +38,8 @@ axiosInstance.interceptors.response.use(
                 return Promise.reject(refreshError);
             }
         }
+        const message = error.response?.data?.message || "Something went wrong";
+        toast.error(message)
         return Promise.reject(error);
     }
 )
