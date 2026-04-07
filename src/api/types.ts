@@ -11,6 +11,10 @@ export interface RegisterReponse{
     user: User
 }
 
+export interface HealthCheck{
+    user: User;
+}
+
 export interface AddTaskData{
     title: string
     description: string

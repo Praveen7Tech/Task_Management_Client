@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "./app/store/store";
 import { useEffect } from "react";
 import { AuthApi } from "./api/auth.api";
-import { logout, setCredentials } from "./app/slices/auth.slice";
+import { logout, setCredentials, type User } from "./app/slices/auth.slice";
 import Loading from "./components/custom/Loading";
 import { ProtectedRoute } from "./routes/protected.route";
 import Dashboard from "./pages/Dashboard";
@@ -20,22 +20,16 @@ function App() {
   const { isLoading } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
-  const initializeAuth = async () => {
-    try {
-      const data = await AuthApi.health();
-      console.log("health ", data)
-      if (data.id) {
-        dispatch(setCredentials(data));
-      } else {
-        dispatch(logout());
-      }
-    } catch (err) {
-      console.error(err)
-      dispatch(logout());
-    }
-  };
-  initializeAuth();
-}, [dispatch]);
+      const initializeAuth = async () => {
+        try {
+          const user = await AuthApi.health();
+          dispatch(setCredentials(user.user)); 
+        } catch (err) {
+          dispatch(logout());
+        }
+      };
+      initializeAuth();
+  }, [dispatch]);
 
   if (isLoading) return <Loading/>
 
