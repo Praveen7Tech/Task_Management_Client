@@ -1,5 +1,4 @@
 
-import type { User } from "../app/slices/auth.slice";
 import type { LoginFormData } from "../pages/LoginPage";
 import type {  } from "../pages/RegisterPage";
 import axiosInstance from "./axios";

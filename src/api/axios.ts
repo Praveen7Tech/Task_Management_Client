@@ -1,7 +1,6 @@
 import axios, { type InternalAxiosRequestConfig } from "axios";
 import { store } from "../app/store/store";
 import { logout, } from "../app/slices/auth.slice";
-import toast from "react-hot-toast";
 import { AuthApi } from "./auth.api";
 
 const axiosInstance = axios.create({

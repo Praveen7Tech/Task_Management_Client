@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "./app/store/store";
 import { useEffect } from "react";
 import { AuthApi } from "./api/auth.api";
-import { logout, setCredentials, type User } from "./app/slices/auth.slice";
+import { logout, setCredentials } from "./app/slices/auth.slice";
 import Loading from "./components/custom/Loading";
 import { ProtectedRoute } from "./routes/protected.route";
 import Dashboard from "./pages/Dashboard";
