@@ -1,7 +1,8 @@
 import axios, { type InternalAxiosRequestConfig } from "axios";
 import { store } from "../app/store/store";
-import { logout } from "../app/slices/auth.slice";
+import { logout, } from "../app/slices/auth.slice";
 import toast from "react-hot-toast";
+import { AuthApi } from "./auth.api";
 
 const axiosInstance = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
@@ -22,16 +23,23 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
     (response)=> response,
-    (error)=>{
-        if(error.response.status === 401){
-            console.log("un autherisation")
-            store.dispatch(logout())
-            return Promise.reject(error)
-        }
+    async (error)=>{
+        const originalRequest = error.config;
+        if (error.response?.status === 401 && !originalRequest._retry) {
+            originalRequest._retry = true;
 
-        const message = error.response.data.message || "Something went wrong"
-        toast.error(message)
-        return Promise.reject(error)
+            try {
+                await AuthApi.health();
+                // If successful, the backend sent a NEW accessToken cookie
+                //  retry the original request
+                return axiosInstance(originalRequest);
+            } catch (refreshError) {
+                // Refresh token also expired or invalid -> Force Logout
+                store.dispatch(logout());
+                return Promise.reject(refreshError);
+            }
+        }
+        return Promise.reject(error);
     }
 )
 

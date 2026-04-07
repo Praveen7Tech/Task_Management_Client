@@ -3,7 +3,7 @@ import type { User } from "../app/slices/auth.slice";
 import type { LoginFormData } from "../pages/LoginPage";
 import type {  } from "../pages/RegisterPage";
 import axiosInstance from "./axios";
-import type { RegisterData, RegisterReponse } from "./types";
+import type { HealthCheck, RegisterData, RegisterReponse } from "./types";
 
 export const AuthApi = {
     register: async(formData: RegisterData): Promise<RegisterReponse>=>{
@@ -26,7 +26,7 @@ export const AuthApi = {
         return response.data
     },
 
-    health: async():Promise<User>=>{
+    health: async():Promise<HealthCheck>=>{
         const response = await axiosInstance.get('/api/auth/health');
         return response.data
     },
