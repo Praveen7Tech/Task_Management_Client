@@ -3,6 +3,7 @@ import { store } from "../app/store/store";
 import { logout, } from "../app/slices/auth.slice";
 import { AuthApi } from "./auth.api";
 import toast from "react-hot-toast";
+import { StatusCode } from "./enum.endpoints";
 
 const axiosInstance = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
@@ -25,7 +26,7 @@ axiosInstance.interceptors.response.use(
     (response)=> response,
     async (error)=>{
         const originalRequest = error.config;
-        if (error.response?.status === 401 && !originalRequest._retry) {
+        if (error.response?.status === StatusCode.UNAUTHORIZED && !originalRequest._retry) {
             originalRequest._retry = true;
 
             try {

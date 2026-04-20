@@ -1,4 +1,3 @@
-// src/components/layout/Header.tsx
 import { Link } from "react-router-dom";
 import { CheckSquare, LogOut } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";

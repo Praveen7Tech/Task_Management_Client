@@ -1,4 +1,3 @@
-// src/components/dashboard/PaginationControls.tsx
 import { Button } from "../ui/button";
 
 interface Props {
@@ -8,7 +7,6 @@ interface Props {
 }
 
 export const PaginationControls = ({ page, totalPages, onPageChange }: Props) => {
-  if (totalPages <= 1) return null;
 
   return (
     <div className="flex justify-center items-center gap-4 mt-6">
