@@ -1,13 +1,12 @@
-import { useSelector } from "react-redux"
-import type { RootState } from "../app/store/store"
-import type { JSX } from "react"
-import { Navigate } from "react-router-dom"
-import { UseSocket } from "../hooks/useSocket"
+import { useSelector } from "react-redux";
+import type { RootState } from "../app/store/store";
+import { Navigate, Outlet } from "react-router-dom";
+import { UseSocket } from "../hooks/useSocket";
 
-export const ProtectedRoute = ({children}: {children: JSX.Element})=>{
-    const isAuthenticated = useSelector((state: RootState)=> state.auth.isAuthenticated)
-     // connect socket when component mount
-    UseSocket()
+export const ProtectedRoute = () => {
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
 
-    return isAuthenticated ? children : <Navigate to={'/'} replace/>
-}
+  UseSocket();
+
+  return isAuthenticated ? <Outlet /> : <Navigate to="/" replace />;
+};
