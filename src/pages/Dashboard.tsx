@@ -23,8 +23,19 @@ const Home = () => {
   const [deleteTarget, setDeleteTarget] = useState<Task | null>(null);
 
   const handleSave = async (data: Omit<Task, "id">) => {
-    dialog.task ? await actions.updateTask({ ...dialog.task, ...data }) : await actions.createTask(data);
-    setDialog({ open: false, task: null });
+    try {
+      if (dialog.task) {
+        await actions.updateTask({ ...dialog.task, ...data });
+      } else {
+        await actions.createTask(data);
+      }
+      return { success: true };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: error?.response?.data?.message || "Something went wrong",
+      };
+    }
   };
 
   return (

@@ -33,7 +33,10 @@ export interface Task {
 interface TaskDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSave: (task: Omit<Task, "id" | "completed">) => void;
+  onSave: (task: Omit<Task, "id">) => Promise<{
+    success: boolean;
+    message?: string;
+  }>;
   task?: Task | null;
 }
 
@@ -76,10 +79,27 @@ const TaskDialog = ({ open, onOpenChange, onSave, task }: TaskDialogProps) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!validate()) return;
-    onSave({ title: title.trim(), description: description.trim(), priority, dueDate, category,status });
-    onOpenChange(false);
+
+    const res = await onSave({
+      title: title.trim(),
+      description: description.trim(),
+      priority,
+      dueDate,
+      category,
+      status,
+    });
+
+    if (res.success) {
+      onOpenChange(false); // close only on success
+    } else {
+      // show error in title field
+      setErrors((prev) => ({
+        ...prev,
+        title: res.message || "Failed to save task",
+      }));
+    }
   };
 
   return (
