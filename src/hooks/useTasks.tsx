@@ -38,8 +38,9 @@ export const useTaskActions = (page: number, limit: number) => {
       const res = await UserApi.createTask(data);
       toast.success(res.message);
       await fetchTasks();
-    } catch {
-      toast.error("Create failed");
+    } catch(error) {
+      console.error(error);
+      throw error;
     }
   };
 
@@ -48,8 +49,9 @@ export const useTaskActions = (page: number, limit: number) => {
       const res = await UserApi.updateTask(task.id, task);
       toast.success(res.message);
       await fetchTasks();
-    } catch {
-      toast.error("Update failed");
+    } catch(error) {
+      console.error("Update failed",error);
+      throw error;
     }
   };
 
@@ -58,8 +60,9 @@ export const useTaskActions = (page: number, limit: number) => {
       const res = await UserApi.deleteTask(id);
       toast.success(res.message);
       await fetchTasks();
-    } catch {
-      toast.error("Delete failed");
+    } catch(error) {
+      console.error("Delete failed",error);
+      throw error;
     }
   };
 
